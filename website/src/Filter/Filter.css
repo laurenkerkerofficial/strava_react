@@ -1,4 +1,41 @@
-.filter-button {
-    margin-top: 150px;
-    margin-left: 100px;
+
+table {
+    width: 92%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+  }
+  
+  thead {
+    color: white;
+    background-color: #243856;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+.date-selection {
+    top: 2in;
+    left: 1in;
+    gap: 37px;
+    display: flex;
 }
+
+.filtering {
+    position: relative;
+    top: 2in;
+    left: 1in;
+}
+
+.dropdown-container {
+    width: 500px; /* Set your desired fixed width */
+  }
