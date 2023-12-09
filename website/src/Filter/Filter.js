@@ -33,6 +33,7 @@ const Filter = () => {
   });
 
   const [selectedActivity, setSelectedActivity] = useState('All');
+  let [filteredActivities, setFilteredActivities] = useState(null);
   const options = ['All', 'Run', 'Ride', 'WeightTraining'];
 
   const handleOptionChange = (event) => {setSelectedActivity(event.target.value)};
@@ -81,8 +82,24 @@ const Filter = () => {
       setErr(err.message);
     } finally {
       setIsLoading(false);
+      if (selectedActivity === 'All') {
+        filteredActivities = activities;
+    } else {
+        filteredActivities = activities.filter((activity) => activity.type === selectedActivity);
+        console.log(filteredActivities)
+    }
     }
   };
+
+  useEffect(() => {
+    // Apply filter when selectedActivity changes
+    if (activities.length > 0) {
+      const filtered = selectedActivity === 'All'
+        ? activities
+        : activities.filter((activity) => activity.type === selectedActivity);
+      setFilteredActivities(filtered);
+    }
+  }, [selectedActivity, activities]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -126,12 +143,12 @@ const Filter = () => {
             <br/>
             <br/>
             <Button variant="contained" color='navyBlue' onClick={GetData} id="filter-button">Filter</Button>
+
+            <br/>
+
+            {isLoading && <h2>Loading...</h2>}
             
         </div>
-
-        {err && <h2>{err}</h2>}
-
-        {isLoading && <h2>Loading...</h2>}
 
         <table>
           {isData && <thead>
@@ -142,9 +159,7 @@ const Filter = () => {
             </tr>
           </thead>}
           <tbody>
-            {activities
-            .filter((activity) => activity.type === selectedActivity)
-            .map((activity) => (
+          {filteredActivities !== null && filteredActivities !== undefined && (filteredActivities.map((activity) => (
               <tr key={activity.id}>
                 <td>
                     <a href={`https://www.strava.com/activities/${activity.id}`} target="_blank" rel="noopener noreferrer">
@@ -154,7 +169,7 @@ const Filter = () => {
                 <td>{activity.type}</td>
                 <td>{formatDate(activity.start_date_local)}</td>
               </tr>
-            ))}
+            )))}
           </tbody>
         </table>
       </div>
